@@ -1,0 +1,10 @@
+main.cpp
+nbproject/
+dist/
+easybmp/
+build/
+gprof.output
+*.bmp
+rand_sse.hpp
+Makefile
+.dep.inc
