@@ -35,8 +35,8 @@ namespace tardis {
     
     template<typename T, typename U>
     noise_combiner& operator+ (T src, U src2) {
-        std::shared_ptr<T> src_ptr = std::make_shared(src);
-        std::shared_ptr<U> src2_ptr = std::make_shared(src2);
+        std::shared_ptr<T> src_ptr = std::make_shared<T>(src);
+        std::shared_ptr<U> src2_ptr = std::make_shared<U>(src2);
         noise_combiner* combiner = new noise_combiner(src_ptr, src2_ptr, combine_operation::ADD);
         return *combiner;
     }
