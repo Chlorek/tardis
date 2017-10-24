@@ -14,30 +14,30 @@ complicated sets of noises in easy to read and logical manner, with enough tinke
 
 ## How to use
 It is not full coverage of API, just simple overview of how work with this library looks like:
-'''
-    auto combined = smooth_noise(0, 20, 100) + smooth_noise(0, 20, 35) + smooth_noise(0, 5, 15);
-    for(/* loop over x */) {
-        for(/* loop over y */) {
-            heightmap[x][y] = combined.at(x, y);
-        }
+```c++
+auto combined = smooth_noise(0, 20, 100) + smooth_noise(0, 20, 35) + smooth_noise(0, 5, 15);
+for(/* loop over x */) {
+    for(/* loop over y */) {
+        heightmap[x][y] = combined.at(x, y);
     }
-'''
+}
+```
 Variable heightmap is just pseudo-code. This example just adds 3 smooth noises output together.
 You can also subtract, multiply and divide.
 
 There is also class named *noise_atlas*, it is essential for generating biomes, islands, rivers etc.
 To put it simple: it just takes noise source to determine noises to be used at given location.
-'''
-    noise_atlas<smooth_noise> atlas(smooth_noise(0, 3, 2));
-    atlas.bind(0, noise_const(100));
-    atlas.bind(1, noise_const(50));
-    atlas.bind(2, noise_const(200));
-    for(/* loop over x */) {
-        for(/* loop over y */) {
-            heightmap[x][y] = atlas.at(x, y);
-        }
+```c++
+noise_atlas<smooth_noise> atlas(smooth_noise(0, 3, 2));
+atlas.bind(0, noise_const(100));
+atlas.bind(1, noise_const(50));
+atlas.bind(2, noise_const(200));
+for(/* loop over x */) {
+    for(/* loop over y */) {
+        heightmap[x][y] = atlas.at(x, y);
     }
-'''
+}
+```
 
 You can also perform changes to X and Y value and internal pairing algorithm. For details contact wiki (To-Do).
 
