@@ -7,10 +7,8 @@ This program originally began as my scholarship project, formerly *"Little Bang"
 to make it modular and extend its possibilities by allowing end user to use internal, basic functions, but without stripping ready-to-use features too,
 these are built on top of those basic functions now. Everything is object-oriented so you can extend functionality to fit your wild needs.
 
-Keep in mind it's not just noise generator like perlin noise (however basic output pretty much resembles it). Tardis lets you design
-complicated sets of noises in easy to read and logical manner, with enough tinkering there is possibility to achieve *(I hope)* pretty much anything you want.
-
-## Readme todo...
+Keep in mind it's not just noise generator like many you can find around. Tardis lets you **design** complicated sets of noises in easy to read and logical
+manner, with enough tinkering there is possibility to achieve *(I&nbsp;hope)* pretty much anything you want.
 
 ## How to use
 It is not full coverage of API, just simple overview of how work with this library looks like:
@@ -22,11 +20,11 @@ for(/* loop over x */) {
     }
 }
 ```
-Variable heightmap is just pseudo-code. This example just adds 3 smooth noises output together.
+Variable heightmap is just pseudo-code. This example just adds 3 smooth noise outputs together.
 You can also subtract, multiply and divide.
 
 There is also class named *noise_atlas*, it is essential for generating biomes, islands, rivers etc.
-To put it simple: it just takes noise source to determine noises to be used at given location.
+To put it simple: it just takes noise source to determine another noise to be uses at given location.
 ```c++
 noise_atlas<smooth_noise> atlas(smooth_noise(0, 3, 2));
 atlas.bind(0, noise_const(100));
@@ -38,6 +36,7 @@ for(/* loop over x */) {
     }
 }
 ```
+In this example every value of smooth_noise output is assigned to const values.
 
 You can also perform changes to X and Y value and internal pairing algorithm. For details contact wiki (To-Do).
 
@@ -66,7 +65,7 @@ will happen (shall take no more but a few minutes of your time)
 * runtime stability was tested many times but so far in 64-bit only and on Linux (which has true, non-limited word sizes, compared to Windows) and is supposed to work fine
 for extended periods of time and without memory-leaks.
 * output is guaranteed to be consistent across future updates, but only when it comes to basic functions, anything that is made to be easy-to-use wrapper, for example
-*noise_layered* class may change anytime. However if some algorithm that changes behavior is replaced, old one will stay available, but moved to tardis::compat namespace
+*noise_layered* class may change anytime. However if some algorithm that changes behavior is introduced, old one will stay available, but moved to tardis::compat namespace
 and/or renamed.
 
 ## Licensing

@@ -3,7 +3,8 @@ nbproject/
 dist/
 easybmp/
 build/
-gprof.output
+gprof*
+gmon.out
 *.bmp
 rand_sse.hpp
 Makefile
