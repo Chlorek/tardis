@@ -18,10 +18,6 @@
 #include "noise.hpp"
 
 namespace tardis {
-    inline static float lerp(float a, float b, float weight) {
-        return a*(1-weight) + b*weight;
-    }
-    
     class smooth_noise : public noise {
         public:
             smooth_noise(int16_t min, int16_t amplitude, float magnification, pairing_functor pair_func = cantor_pairing)
@@ -36,35 +32,16 @@ namespace tardis {
             }
             
             virtual int32_t at(int16_t x, int16_t y) override  {
-                return interpolatedNoise((float)x/magnification, (float)y/magnification) * amplitude + min;
+                return smoothNoise(x/magnification, y/magnification) * amplitude + min;
             }
         protected:
             /* Smooths pixels a bit (average from surrounding points) */
-            float smoothNoise(int16_t x, int16_t y)  {
+            float smoothNoise(int16_t x, int16_t y) {
                 float corners = (randomFloat(x-1, y-1)+randomFloat(x+1, y-1)+randomFloat(x-1, y+1)+randomFloat(x+1, y+1)) / 16;
                 float sides   = (randomFloat(x-1, y  )+randomFloat(x+1, y  )+randomFloat(x,   y-1)+randomFloat(x,   y+1)) / 8;
                 float center  =  randomFloat(x,   y)                                                                      / 4;
 
                 return corners + sides + center;
-            }
-            
-            /* Adds smooth transitions with floating points */
-            float interpolatedNoise(float x, float y)  {
-                uint16_t intX = (uint16_t)x;
-                float fractionalX = x - (float)intX;
-
-                uint16_t intY = (uint16_t)y;
-                float fractionalY = y - (float)intY;
-
-                float v1 = smoothNoise(intX,     intY);
-                float v2 = smoothNoise(intX + 1, intY);
-                float v3 = smoothNoise(intX,     intY + 1);
-                float v4 = smoothNoise(intX + 1, intY + 1);
-
-                float i1 = lerp(v1, v2, fractionalX);
-                float i2 = lerp(v3, v4, fractionalX);
-
-                return lerp(i1, i2, fractionalY);
             }
     };
 }
