@@ -18,6 +18,10 @@
 #include <cstdint>
 
 namespace tardis {
+    inline static float lerp(float a, float b, float weight) {
+        return a*(1-weight) + b*weight;
+    }
+    
     typedef int64_t (*pairing_functor)(const int16_t& x, const int16_t& y);
     pairing_functor cantor_pairing = [](const int16_t& x, const int16_t& y) -> int64_t {
         auto A = (uint64_t)(x >= 0 ? 2 * (int64_t)x : -2 * (int64_t)x - 1);
