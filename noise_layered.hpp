@@ -21,7 +21,6 @@
 #include <stdexcept>
 #include <memory>
 #include <iostream>
-
 namespace tardis {
     template<typename T>
     class noise_layered : public noise_source {
@@ -32,7 +31,7 @@ namespace tardis {
                 for(auto mag : magnification)
                     if(mag == 0)
                         throw std::runtime_error("noise_layered: magnification equal 0");
-                src_ptr = new T(src);
+                src_ptr = std::make_shared<T>(src);
             }
             
             noise_layered(const noise_layered& orig) {
@@ -41,25 +40,28 @@ namespace tardis {
             }
             
             ~noise_layered() {
+                //..
             }
             
-            int32_t at(int16_t x, int16_t y) override {
+            virtual int32_t at(int16_t x, int16_t y) override {
                 int32_t result = 0;
                 // wont overflow, size is checked in constructor
                 for(uint8_t i = 0; i < magnification.size(); ++i) {
-                    auto height = src_ptr->at((float)x/magnification[i], (float)y/magnification[i]);
+                    auto height = src_ptr->raw_at((float)x/magnification[i], (float)y/magnification[i]);
                     switch(i) {
                         case 0 :
                             result += height;
                             break;
                         default:
-                            result += ((float)height/src_ptr->amplitude)*(src_ptr->amplitude-result)*((i-magnification.size())/1.f);
+                            //algorithm i copied from original project, but I cannot find it there now and this one does not work lol
+                            //todo
+                            result += ((float)height/src_ptr->amplitude)*(src_ptr->amplitude-result)*((i-magnification.size())/1.f) ;
                     }  
                 }
                 return result;
             }
-        private:
-            T* src_ptr = nullptr;
+        protected:
+            std::shared_ptr<T> src_ptr = nullptr;
             std::vector<float> magnification; 
     };
 }
