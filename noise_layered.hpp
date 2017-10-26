@@ -20,7 +20,7 @@
 #include <vector>
 #include <stdexcept>
 #include <memory>
-#include <iostream>
+
 namespace tardis {
     template<typename T>
     class noise_layered : public noise_source {
