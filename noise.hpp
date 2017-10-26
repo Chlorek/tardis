@@ -44,7 +44,12 @@ namespace tardis {
             }
             
             virtual int32_t at(int16_t x, int16_t y) override {
-                return randomFloat(x/magnification, y/magnification) * amplitude + min;
+                return raw_at(x/magnification, y/magnification);
+            }
+            
+            /* Used by compositing classes with custom magnification (noise_layered for example) */
+            virtual int32_t raw_at(float x, float y) {
+                return randomFloat(x, y) * amplitude + min;
             }
 
             /* Returns float in range <0,1>.
@@ -61,7 +66,6 @@ namespace tardis {
                 return randomFloat(pair_func(x, y));
             }
         protected:
-            
             int16_t min, amplitude;
             float magnification;
             pairing_functor pair_func = nullptr;

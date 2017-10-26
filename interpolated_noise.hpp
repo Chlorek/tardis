@@ -32,9 +32,14 @@ namespace tardis {
                 //..
             }
             
-            virtual int32_t at(int16_t x, int16_t y) override  {
-                return interpolatedNoise((float)x/magnification, (float)y/magnification) * amplitude + min;
+            virtual int32_t at(int16_t x, int16_t y) override {
+                return raw_at(x/magnification, y/magnification);
             }
+            
+            virtual int32_t raw_at(float x, float y) override {
+                return interpolatedNoise(x, y) * amplitude + min;
+            }
+            
         protected:           
             /* Adds smooth transitions with floating points */
             float interpolatedNoise(float x, float y) {

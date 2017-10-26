@@ -32,7 +32,11 @@ namespace tardis {
             }
             
             virtual int32_t at(int16_t x, int16_t y) override  {
-                return smoothNoise(x/magnification, y/magnification) * amplitude + min;
+                return raw_at(x/magnification, y/magnification);
+            }
+            
+            virtual int32_t raw_at(float x, float y) override {
+                return smoothNoise(x, y) * amplitude + min;
             }
         protected:
             /* Smooths pixels a bit (average from surrounding points) */
