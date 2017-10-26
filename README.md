@@ -13,20 +13,22 @@ manner, with enough tinkering there is possibility to achieve *(I&nbsp;hope)* pr
 ## How to use
 It is not full coverage of API, just simple overview of how work with this library looks like:
 ```c++
-auto combined = smooth_noise(0, 20, 100) + smooth_noise(0, 20, 35) + smooth_noise(0, 5, 15);
+auto combined = intrpl_noise(0, 20, 100) + intrpl_noise(0, 20, 35) + intrpl_noise(0, 5, 15);
 for(/* loop over x */) {
     for(/* loop over y */) {
         heightmap[x][y] = combined.at(x, y);
     }
 }
 ```
-Variable heightmap is just pseudo-code. This example just adds 3 smooth noise outputs together.
-You can also subtract, multiply and divide.
+Variable heightmap is just pseudo-code. This example just adds 3 interpolated noise outputs together.
+You can also subtract, multiply and divide.  
+Such combination for 2000x2000 looks like this:  
+![Example heightmap](https://mentat.space/img/3noises.png)
 
 There is also class named *noise_atlas*, it is essential for generating biomes, islands, rivers etc.
 To put it simple: it just takes noise source to determine another noise to be uses at given location.
 ```c++
-noise_atlas<smooth_noise> atlas(smooth_noise(0, 3, 2));
+noise_atlas<intrpl_noise> atlas(intrpl_noise(0, 3, 60));
 atlas.bind(0, noise_const(100));
 atlas.bind(1, noise_const(50));
 atlas.bind(2, noise_const(200));
@@ -36,12 +38,14 @@ for(/* loop over x */) {
     }
 }
 ```
-In this example every value of smooth_noise output is assigned to const values.
+In this example every value of intrpl_noise output is assigned to const values.  
+Output of size 2000x2000 results in:  
+![Example atlas output](https://mentat.space/img/atlasnoises.png)
 
-You can also perform changes to X and Y value and internal pairing algorithm. For details contact wiki (To-Do).
+For informations about other classes and features [see Wiki](https://github.com/Chlorek/tardis/wiki).
 
 ## Requirements
-It is pure C++, all you need is compiler supporting C++14.
+It is pure C++, all you need is compiler supporting C++14. I am playing around with C++17 though, if I add something that requires this standard it will be optional.
 
 ## Performance
 It was designed with performance in mind, but there are little trade-offs introduced by easy to use C++ API. While it is not optimized yet, I think current performance is just enough though.
