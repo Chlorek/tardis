@@ -26,7 +26,7 @@ namespace tardis {
     class noise_layered : public noise_source {
         public:
             noise_layered(T src, std::vector<float> magnification) : magnification(magnification) {
-                if(magnification.size() > 255) 
+                if(magnification.size() > 256) 
                     throw std::runtime_error("noise_layered: too many layers");
                 for(auto mag : magnification)
                     if(mag == 0)
@@ -53,10 +53,8 @@ namespace tardis {
                             result += height;
                             break;
                         default:
-                            //algorithm i copied from original project, but I cannot find it there now and this one does not work lol
-                            //todo
-                            result += ((float)height/src_ptr->amplitude)*(src_ptr->amplitude-result)*((i-magnification.size())/1.f) ;
-                    }  
+                            result += (src_ptr->amplitude - result) * ((float)height/src_ptr->amplitude) / (i*2);
+                    }
                 }
                 return result;
             }
