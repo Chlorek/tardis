@@ -30,7 +30,7 @@ namespace tardis {
                 //..
             }
                 
-            noise_combiner(const noise_combiner& orig)  {
+            noise_combiner(const noise_combiner& orig) {
                 src_t = orig.src_t;
                 src_u = orig.src_u;
                 operation = orig.operation;
@@ -40,29 +40,26 @@ namespace tardis {
                 //..
             }
 
-            int32_t at(int16_t x, int16_t y) override  {
-                int32_t result = src_t->at(x, y);
+            int32_t at(int16_t x, int16_t y) override {
                 switch(operation) {
                     case combine_operation::ADD :
-                        result += src_u->at(x, y);
+                        return src_t->at(x, y) + src_u->at(x, y);
                         break;
                     case combine_operation::SUB :
-                        result -= src_u->at(x, y);
+                        return src_t->at(x, y) - src_u->at(x, y);
                         break;
                     case combine_operation::DIV :
-                        result /= src_u->at(x, y);
+                        return src_t->at(x, y) / src_u->at(x, y);
                         break;
                     case combine_operation::MUL :
-                        result *= src_u->at(x, y);
+                        return src_t->at(x, y) * src_u->at(x, y);
                         break;
                     default:
                         throw std::runtime_error("noise_combiner: unknown operation");
                 }
-                return result;
             }
         private:
-            std::shared_ptr<noise_source> src_t;
-            std::shared_ptr<noise_source> src_u;
+            std::shared_ptr<noise_source> src_t, src_u;
             combine_operation operation;
     };
 }
