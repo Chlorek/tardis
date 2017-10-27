@@ -30,40 +30,40 @@ namespace tardis {
             virtual ~noise_source() {};
             
             virtual int32_t at(int16_t x, int16_t y) = 0;
+            
+            template<typename T, typename U>
+            friend noise_combiner& operator+ (T src, U src2) {
+                std::shared_ptr<T> src_ptr = std::make_shared<T>(src);
+                std::shared_ptr<U> src2_ptr = std::make_shared<U>(src2);
+                noise_combiner* combiner = new noise_combiner(src_ptr, src2_ptr, combine_operation::ADD);
+                return *combiner;
+            }
+            
+            template<typename T, typename U>
+            friend noise_combiner& operator- (T src, U src2) {
+                std::shared_ptr<T> src_ptr = std::make_shared(src);
+                std::shared_ptr<U> src2_ptr = std::make_shared(src2);
+                noise_combiner* combiner = new noise_combiner(src_ptr, src2_ptr, combine_operation::SUB);
+                return *combiner;
+            }
+            
+            template<typename T, typename U>
+            friend noise_combiner& operator* (T src, U src2) {
+                std::shared_ptr<T> src_ptr = std::make_shared(src);
+                std::shared_ptr<U> src2_ptr = std::make_shared(src2);
+                noise_combiner* combiner = new noise_combiner(src_ptr, src2_ptr, combine_operation::MUL);
+                return *combiner;
+            }
+            
+            template<typename T, typename U>
+            friend noise_combiner& operator/ (T src, U src2) {
+                std::shared_ptr<T> src_ptr = std::make_shared(src);
+                std::shared_ptr<U> src2_ptr = std::make_shared(src2);
+                noise_combiner* combiner = new noise_combiner(src_ptr, src2_ptr, combine_operation::DIV);
+                return *combiner;
+            }
         protected:
     };
-    
-    template<typename T, typename U>
-    noise_combiner& operator+ (T src, U src2) {
-        std::shared_ptr<T> src_ptr = std::make_shared<T>(src);
-        std::shared_ptr<U> src2_ptr = std::make_shared<U>(src2);
-        noise_combiner* combiner = new noise_combiner(src_ptr, src2_ptr, combine_operation::ADD);
-        return *combiner;
-    }
-
-    template<typename T, typename U>
-    noise_combiner& operator- (T src, U src2) {
-        std::shared_ptr<T> src_ptr = std::make_shared(src);
-        std::shared_ptr<U> src2_ptr = std::make_shared(src2);
-        noise_combiner* combiner = new noise_combiner(src_ptr, src2_ptr, combine_operation::SUB);
-        return *combiner;
-    }
-
-    template<typename T, typename U>
-    noise_combiner& operator* (T src, U src2) {
-        std::shared_ptr<T> src_ptr = std::make_shared(src);
-        std::shared_ptr<U> src2_ptr = std::make_shared(src2);
-        noise_combiner* combiner = new noise_combiner(src_ptr, src2_ptr, combine_operation::MUL);
-        return *combiner;
-    }
-
-    template<typename T, typename U>
-    noise_combiner& operator/ (T src, U src2) {
-        std::shared_ptr<T> src_ptr = std::make_shared(src);
-        std::shared_ptr<U> src2_ptr = std::make_shared(src2);
-        noise_combiner* combiner = new noise_combiner(src_ptr, src2_ptr, combine_operation::DIV);
-        return *combiner;
-    }
 }
 
 #endif /* NOISE_SOURCE_HPP */
