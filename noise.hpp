@@ -32,10 +32,7 @@ namespace tardis {
                 //..
             }
             
-            noise(const noise& orig) {
-                min = orig.min;
-                amplitude = orig.amplitude;
-                magnification = orig.magnification;
+            noise(const noise& orig) : min(orig.min), amplitude(orig.amplitude), magnification(orig.magnification) {
                 pair_func = orig.pair_func;
             }
             
@@ -47,7 +44,7 @@ namespace tardis {
                 return raw_at(x/magnification, y/magnification);
             }
             
-            /* Used by compositing classes with custom magnification (noise_layered for example) */
+            /* Used by composing classes with custom magnification (noise_layered for example) */
             virtual int32_t raw_at(float x, float y) {
                 return randomFloat(x, y) * amplitude + min;
             }
@@ -65,9 +62,10 @@ namespace tardis {
             virtual float randomFloat(int16_t x, int16_t y) {
                 return randomFloat(pair_func(x, y));
             }
+            
+            const int16_t min, amplitude;
+            const float magnification;
         protected:
-            int16_t min, amplitude;
-            float magnification;
             pairing_functor pair_func = nullptr;
     };
 }
